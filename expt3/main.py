@@ -32,18 +32,27 @@ result = gcd(a, b)
 print(myTable)
 print(f"GCD({a}, {b}) = {result}")
 
-d=result;
+d = result
 
-if(c%d!=0):
-   print("The Equation does not have any Solution")
-   exit()
+# handle the special case when gcd is 0 (both a and b are 0)
+if d == 0:
+    if c == 0:
+        print("Infinite solutions (0x + 0y = 0).")
+    else:
+        print("The Equation does not have any Solution")
+    exit()
 
-temp_a=(int)(a/d);
-temp_b=(int)(b/d);
-temp_c=(int)(c/d);
+if c % d != 0:
+  print("The equation does not have any solution.")
+  exit()
 
-print("Tempary Equation:")
-if(temp_b>0):
+# use integer division to keep coefficients integer and handle negatives correctly
+temp_a = int(a // d)
+temp_b = int(b // d)
+temp_c = int(c // d)
+
+print("Temporary Equation:")
+if temp_b > 0:
     print(f"{temp_a} s+{temp_b} t = 1")
 else:
     print(f"{temp_a} s{temp_b} t = 1")
@@ -53,18 +62,15 @@ else:
 myTable2 = PrettyTable(['q', 'r1', 'r2', 'r', 's1', 's2', 's', 't1', 't2', 't'])
 myTable2.align = 'c'
 
-def extended_gcd(a,b):
+def extended_gcd(a, b):
     r1 = a
-    if(b>0):
-      r2=b
-    else:
-     r2 = -b
+    r2 = b
     s1 = 1
     s2 = 0
     t1 = 0
     t2 = 1
-    
-    while r2 > 0:
+
+    while r2 != 0:
         q = r1 // r2
         r = r1 - q * r2
         s = s1 - q * s2
@@ -73,18 +79,21 @@ def extended_gcd(a,b):
         r1, r2 = r2, r
         s1, s2 = s2, s
         t1, t2 = t2, t
-    
-    gcd = r1
-    s = s1
-    t = t1
-    return  s, t
 
-s, t = extended_gcd(temp_a,temp_b)
+    # if final gcd is negative, flip coefficients so a*s + b*t = +gcd
+    if r1 < 0:
+        s1 = -s1
+        t1 = -t1
+
+    return s1, t1
+
+s, t = extended_gcd(temp_a, temp_b)
 print(myTable2)
 print(f"s = {s}   t = {t}")
 
-x_0=(int)((c/d)*s);
-y_0=(int)((c/d)*t);
+# particular solution: multiply the coefficients by temp_c (which is c/d)
+x_0 = int(temp_c * s)
+y_0 = int(temp_c * t)
 print("Particular Solution:")
 print(f"x_0={x_0}   y_0={y_0}")
 
@@ -93,3 +102,5 @@ if(b<0):
    print(f"x={x_0}{(int)(b/d)}k   y={y_0}-{(int)(a/d)}k  ")
 else:
    print(f"x={x_0}+{(int)(b/d)}k   y={y_0}-{(int)(a/d)}k  ")
+
+
