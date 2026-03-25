@@ -1,15 +1,11 @@
 
 from prettytable import PrettyTable
-
 def extended_gcd(a, b):
     myTable = PrettyTable(['q', 'r1', 'r2', 'r', 's1', 's2', 's', 't1', 't2', 't'])
-    myTable.align = 'c'
-    
+    myTable.align = 'c'  
     r1, r2 = a, b
     s1, s2 = 1, 0
     t1, t2 = 0, 1
-
-
     while r2 > 0:
         q = r1 // r2
         r  = r1 - q * r2
@@ -19,22 +15,17 @@ def extended_gcd(a, b):
         r1, r2 = r2, r
         s1, s2 = s2, s
         t1, t2 = t2, t
-    # r1 = gcd, s1 = Bézout coeff for a, t1 = Bézout coeff for b
     print("\n" + str(myTable))
     return r1, s1, t1
 
 
 def gcd(a, b):
-    """Plain GCD (no output)."""
     while b:
         a, b = b, a % b
     return a
 
 
 def euler_totient(m):
-    """
-    Compute φ(m) — count of integers in [1, m] coprime to m.
-    """
     count = 0
     for k in range(1, m + 1):
         if gcd(k, m) == 1:
@@ -45,13 +36,11 @@ def euler_totient(m):
 def modular_exponentiation(base, exp, mod):
     base = base % mod
     result = 1
-
     while exp > 0:
-        if exp % 2 == 1:                   # if exponent is odd
+        if exp % 2 == 1:                  
             result = (result * base) % mod
-        base = (base * base) % mod         # square base
-        exp //= 2                          # divide exponent by 2
-
+        base = (base * base) % mod        
+        exp //= 2                          
     return result
 
 # ─────────────────────────────────────────────
@@ -72,8 +61,6 @@ def euclids_method(a, b, m):
     if b % d != 0:
         print(f"\n  ✗ No solution: gcd({a},{m}) = {d} does not divide {b}")
         return None
-
-    # Base solution
     s0 = (s * (b // d)) % m
     solutions = [(s0 + i * (m // d)) % m for i in range(d)]
     solutions.sort()
@@ -88,10 +75,13 @@ def euclids_method(a, b, m):
 #  METHOD B — MODULAR EXPONENTIATION + TOTIENT
 # ─────────────────────────────────────────────
 
-def totient_method(a, b, m):
+def totient_method(a_t, b_t, m_t):
 
-    print(f"  Equation : {a}x ≡ {b} (mod {m})")
-
+    print(f"  Equation : {a_t}x ≡ {b_t} (mod {m_t})")
+    d = gcd(a_t, m_t)
+    a=int(a_t/d);
+    b=int(b_t/d);
+    m=int(m_t/d);
     d = gcd(a, m)
     if d != 1:
         print(f"\n  ✗ Method requires gcd(a,m) = 1, but gcd({a},{m}) = {d}")
