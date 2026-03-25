@@ -106,10 +106,14 @@ def totient_method(a_t, b_t, m_t):
 #  METHOD C — MULTIPLICATIVE INVERSE METHOD
 # ─────────────────────────────────────────────
 
-def multiplicative_inverse_method(a, b, m):
+def multiplicative_inverse_method(a_t, b_t, m_t):
     print("  METHOD C: MULTIPLICATIVE INVERSE METHOD")
-    print(f"  Equation : {a}x ≡ {b} (mod {m})")
+    print(f"  Equation : {a_t}x ≡ {b_t} (mod {m_t})")
 
+    d = gcd(a_t, m_t)
+    a=int(a_t/d);
+    b=int(b_t/d);
+    m=int(m_t/d);
     d = gcd(a, m)
     if d != 1:
         print(f"\n  ✗ Inverse does not exist: gcd({a},{m}) = {d} ≠ 1")
