@@ -3,6 +3,7 @@ a = int(input("Enter Number1:"))
 b = int(input("Enter Number2:"))
 c = int(input("Enter Constant:"))
 print("Equation:")
+
 if(b>0):
     print(f"{a} x + {b} y= {c} ")
 else:
@@ -23,6 +24,7 @@ def gcd(a, b):
 result = gcd(a, b)
 print(myTable)
 print(f"GCD({a}, {b}) = {result}")
+
 d = result
 if d == 0:
     if c == 0:
@@ -33,6 +35,7 @@ if d == 0:
 if c % d != 0:
     print("The equation does not have any solution.")
     exit()
+
 temp_a = int(a // d)
 temp_b = int(b // d)
 temp_c = int(c // d)
@@ -64,6 +67,7 @@ def extended_gcd(a, b):
         t1 = -t1
     return s1, t1
 s, t = extended_gcd(temp_a, temp_b)
+
 print(myTable2)
 print(f"s = {s}   t = {t}")
 x_0 = int(temp_c * s)

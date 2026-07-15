@@ -1,171 +1,241 @@
 import math
-import time
-from sympy import isprime
 
-# ─── HELPERS ─────────────────────────────────────────────────────────────────
+# ---------------- BASIC FUNCTIONS ----------------
 
-def get_number():
-    while True:
-        try:
-            n = int(input("  Enter number to factor: "))
-            if n < 4:
-                print("  Please enter an integer >= 4.")
-            elif isprime(n):
-                print(f"  {n} is prime — nothing to factor.")
-            else:
-                return n
-        except ValueError:
-            print("  Invalid input.")
+def gcd(a, b):
+    return math.gcd(a, b)
 
-def show_result(n, x, y):
-    print(f"\n  Number  : {n}")
-    if x is None:
-        print("  Result  : Could not find two factors.")
-    else:
-        print(f"  x       : {x}")
-        print(f"  y       : {y}")
-        print(f"  x * y   : {x} * {y} = {x * y}")
-        print(f"  Verify  : {'CORRECT' if x * y == n else 'ERROR'}")
+def is_square(n):
+    root = math.isqrt(n)
+    return root * root == n
 
-def sieve(limit):
-    is_p = [True] * (limit + 1)
-    is_p[0] = is_p[1] = False
-    for i in range(2, int(limit**0.5) + 1):
-        if is_p[i]:
-            for j in range(i*i, limit + 1, i):
-                is_p[j] = False
-    return [i for i in range(2, limit + 1) if is_p[i]]
+def is_prime(num):
+    if num < 2:
+        return False
 
-def pollards_p1(n, B=200):
-    """
-    If factor p has (p-1) B-smooth:
-      a = 2^(all prime powers <= B) mod n
-      gcd(a-1, n) gives a factor.
-    """
-    prime_powers = []
-    for p in sieve(B):
-        q = p
-        while q <= B:
-            prime_powers.append(q)
-            q *= p
-    print(f"\n  B = {B}  |  Prime powers to process: {len(prime_powers)}")
-    print(f"\n  {'Step':<6} {'Prime power q':<16} {'a mod n (last 8 digits)':<26} {'gcd(a-1, n)'}")
-    print(f"  {'-'*65}")
-    a = 2
-    for i, q in enumerate(prime_powers):
-        a = pow(a, q, n)
-        d = math.gcd(a - 1, n)
-        if i < 8 or d > 1:
-            print(f"  {i+1:<6} {q:<16} ...{str(a)[-8:]:<26} {d}")
-        if 1 < d < n:
-            print("\n  Factor found!")
-            return d, n // d
-        if d == n:
-            print("\n  d = n — failed. Try a larger B.")
-            return None, None
+    for i in range(2, math.isqrt(num) + 1):
+        if num % i == 0:
+            return False
 
-    print(f"\n  No factor found with B = {B}. Try increasing B.")
-    return None, None
+    return True
 
-# ─── 3. QUADRATIC SIEVE ──────────────────────────────────────────────────────
 
-def quadratic_sieve(n):
-    # 1. Setup
-    B = 40  # Keep small for exam memory
-    fb = [p for p in range(2, 200) if pow(n, (p - 1) // 2, p) in (0, 1)][:B]
-    sqrtn = math.isqrt(n)
-    smooth = [] # Stores (x, ft, bitmask)
+# ---------------- 1. FERMAT FACTORIZATION ----------------
 
-    # 2. Find Smooth Numbers
-    for t in range(1, 500):
-        x = sqrtn + t
-        ft = x*x - n
-        rem, mask = ft, 0
-        for i, p in enumerate(fb):
-            while rem % p == 0:
-                rem //= p
-                mask ^= (1 << i)
-        if rem == 1:
-            smooth.append((x, ft, mask))
-            if len(smooth) > B: break
+def fermat_factorization(n):
 
-    # 3. Solve Linear Dependency (Gaussian Elimination)
-    basis = {} # {mask: product_of_x, product_of_ft}
-    for x, ft, mask in smooth:
-        orig_mask, orig_x, orig_ft = mask, x, ft
-        for b in basis:
-            if (mask ^ b) < mask:
-                mask ^= b
-                orig_x *= basis[b]
-                orig_ft *= basis[b]
-        
-        if mask > 0:
-            basis[mask] = (orig_x, orig_ft)
-        else:
-            # Dependency found!
-            y = int(math.isqrt(orig_ft)) % n
-            d = math.gcd(abs(orig_x - y), n)
-            if 1 < d < n: return d, n // d
-    return None
+    a = math.isqrt(n)
 
-# ─── 4. POLLARD'S RHO ────────────────────────────────────────────────────────
+    if a * a < n:
+        a += 1
 
-def pollards_rho(n):
-    if n % 2 == 0: return 2, n // 2
-    x, y, d = 2, 2, 1
-    f = lambda x: (x * x + 1) % n
-    
-    while d == 1:
-        x = f(x)
-        y = f(f(y))
-        d = math.gcd(abs(x - y), n)
-        
-    return (d, n // d) if 1 < d < n else None
-# ─── MENU ────────────────────────────────────────────────────────────────────
-
-def menu():
-    print("=" * 50)
-    print("      INTEGER FACTORIZATION ALGORITHMS")
-    print("=" * 50)
+    print("\nFermat Factorization Steps:")
 
     while True:
-        print("""
-  1. Pollard's P-1 Algorithm
-  2. Quadratic Sieve
-  3. Pollard's Rho
-  0. Exit""")
 
-        choice = input("\n  Choice: ").strip()
+        b2 = a * a - n
 
-        if choice == '0':
-            print("\n  Goodbye!\n")
-            break
-        elif choice not in ('1', '2', '3', '4'):
-            print("  Invalid choice. Enter 0-4.")
+        print(f"a = {a}")
+        print(f"a^2 - n = {a*a} - {n} = {b2}")
+
+        if is_square(b2):
+
+            b = math.isqrt(b2)
+
+            print(f"\nPerfect square found: {b2}")
+            print(f"b = sqrt({b2}) = {b}")
+
+            print("\nUsing:")
+            print("n = a^2 - b^2")
+            print("n = (a-b)(a+b)")
+
+            factor1 = a - b
+            factor2 = a + b
+
+            return factor1, factor2
+
+        a += 1
+
+
+# ---------------- 2. POLLARD p - 1 FACTORIZATION ----------------
+
+def pollard_p_minus_1(n, B, a):
+
+    print("\nPollard p - 1 Steps:")
+
+    for j in range(2, B + 1):
+
+        if not is_prime(j):
             continue
 
-        n = get_number()
+        power = j
 
-        if choice == '1':
-            print("\n  [Pollard's P-1]")
-            try:
-                B = int(input("  Smoothness bound B (default 200): ") or 200)
-            except ValueError:
-                B = 200
-            x, y = pollards_p1(n, B)
+        while power * j <= B:
+            power *= j
 
-        elif choice == '2':
-            print("\n  [Quadratic Sieve]")
-            x, y = quadratic_sieve(n)
+        a = pow(a, power, n)
 
-        elif choice == '3':
-            print("\n  [Pollard's Rho]")
-            x, y = pollards_rho(n)
+        d = gcd(a - 1, n)
+
+        print(f"\nj = {j}")
+        print(f"largest power of {j} <= {B} is {power}")
+        print(f"a = a^{power} mod n = {a}")
+        print(f"gcd(a - 1, n) = gcd({a-1}, {n}) = {d}")
+
+        if d != 1 and d != n:
+            return d, n // d
+
+    return None
 
 
+# ---------------- 3. POLLARD RHO FACTORIZATION ----------------
 
-        show_result(n, x, y)
-        input("\n  Press Enter to continue...")
+def pollard_rho(n):
 
-if __name__ == "__main__":
-    menu()
+    if n % 2 == 0:
+        return 2, n // 2
+
+    def g(x):
+        return (x * x + 1) % n
+
+    x = 2
+    y = 2
+    d = 1
+
+    print("\nPollard Rho Steps:")
+    print("Using g(x) = x^2 + 1")
+
+    while d == 1:
+
+        x = g(x)          # x = g(x)
+        y = g(g(y))       # y = g(g(y))
+
+        diff = abs(x - y)
+        d = gcd(diff, n)
+
+        print(f"\nx = {x}")
+        print(f"y = {y}")
+        print(f"|x - y| = {diff}")
+        print(f"gcd({diff}, {n}) = {d}")
+
+    if d == n:
+        return None
+
+    return d, n // d
+
+
+# ---------------- 4. BASIC QUADRATIC SIEVE ----------------
+
+def quadratic_sieve_basic(n):
+
+    x = math.isqrt(n)
+
+    if x * x < n:
+        x += 1
+
+    print("\nQuadratic Sieve Steps:")
+    print(f"Starting x = ceil(sqrt({n})) = {x}")
+
+    while True:
+
+        y2 = (x * x) % n
+
+        print(f"\n{x}^2 mod {n} = {y2}")
+
+        if is_square(y2):
+
+            y = math.isqrt(y2)
+
+            print(f"\nPerfect square found:")
+            print(f"{y2} = {y}^2")
+
+            print("\nTherefore:")
+            print(f"{x}^2 ≡ {y}^2 mod {n}")
+
+            factor1 = gcd(x - y, n)
+            factor2 = gcd(x + y, n)
+
+            print(f"\ngcd({x} - {y}, {n}) = {factor1}")
+            print(f"gcd({x} + {y}, {n}) = {factor2}")
+
+            if factor1 != 1 and factor1 != n:
+                return factor1, n // factor1
+
+            if factor2 != 1 and factor2 != n:
+                return factor2, n // factor2
+
+        x += 1
+
+
+# ---------------- MENU ----------------
+
+while True:
+
+    print("\n==============================")
+    print(" FACTORIZATION METHODS")
+    print("==============================")
+    print("1. Fermat Factorization")
+    print("2. Pollard p - 1 Factorization")
+    print("3. Pollard Rho Method")
+    print("4. Quadratic Sieve Method")
+    print("5. Exit")
+
+    choice = int(input("\nEnter your choice: "))
+
+    if choice == 1:
+
+        n = int(input("Enter odd composite number n: "))
+
+        factors = fermat_factorization(n)
+
+        print("\nFactors are:")
+        print(f"{n} = {factors[0]} × {factors[1]}")
+
+    elif choice == 2:
+
+        n = int(input("Enter composite number n: "))
+        B = int(input("Enter bound B: "))
+        a = int(input("Enter base a: "))
+
+        result = pollard_p_minus_1(n, B, a)
+
+        print("\nUsing Pollard p - 1:")
+
+        if result is None:
+            print("No factor found.")
+        else:
+            print(f"Factors are: {result[0]} and {result[1]}")
+
+    elif choice == 3:
+
+        n = int(input("Enter composite number n: "))
+
+        result = pollard_rho(n)
+
+        print("\nUsing Pollard Rho:")
+
+        if result is None:
+            print("No factor found.")
+        else:
+            print(f"Factors are: {result[0]} and {result[1]}")
+
+    elif choice == 4:
+
+        n = int(input("Enter composite number n: "))
+
+        result = quadratic_sieve_basic(n)
+
+        print("\nUsing Quadratic Sieve:")
+
+        if result is None:
+            print("No factor found.")
+        else:
+            print(f"Factors are: {result[0]} and {result[1]}")
+
+    elif choice == 5:
+
+        print("Program ended.")
+        break
+
+    else:
+        print("Invalid choice.")
