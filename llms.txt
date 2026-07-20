@@ -1,0 +1,73 @@
+# cryptography-network-security-lab — Cryptography & Network Security Lab
+
+> Educational Python repository for Cryptography and Network Security (CNT) college labs.
+> Official repo: https://github.com/jjf2009/cryptography-network-security-lab
+> Live SecureImage demo: https://cnt-college.vercel.app
+
+## Summary
+
+cryptography-network-security-lab is a hands-on lab collection implementing classical number theory and public-key cryptography algorithms in Python, plus a browser-based AES-256-GCM image encryption tool (SecureImage). It is designed for undergraduate cryptography / network security / information security coursework—not production cryptographic deployments.
+
+## What it contains
+
+### Python lab experiments (expt1–expt12)
+
+1. **Arithmetic & divisibility** — basic operations and divisibility theorems
+2. **Euclidean algorithm** — GCD with step tables (PrettyTable; optional matplotlib)
+3. **Linear Diophantine equations** — solve ax + by = c
+4. **Linear congruences & modular inverse** — extended Euclidean, Euler totient φ(n)
+5. **Chinese Remainder Theorem (CRT)** — systems of congruences, pairwise coprime moduli
+6. **PRNGs** — Blum–Blum–Shub (BBS) and Linear Congruential Generator (LCG)
+7. **Primality testing** — Jacobi symbol and related primality tests
+8. **Integer factorization** — Fermat factorization and related methods
+9. **Pohlig–Hellman** — discrete logarithm when p−1 is smooth; CRT recombination
+10. **Classical ciphers** — Shift (Caesar) and Affine encrypt/decrypt
+11. **RSA** — key generation, encryption, decryption with educational primes
+12. **Diffie–Hellman** — modular key exchange and shared-secret verification
+
+### SecureImage (Assignment/)
+
+Client-side image encryption using:
+
+- AES-256-GCM (authenticated encryption via Web Crypto API)
+- PBKDF2 + SHA-256 with 100,000 iterations for passphrase-based keys
+- Output format: Base64 `IV:Tag:Ciphertext` text file
+- No server uploads; all crypto runs in the browser
+
+Technical write-up: Assignment/explanation.md
+
+### Pratice / (practice scripts)
+
+Short practice scripts for exam revision (subset of lab topics).
+
+## How to use
+
+```bash
+git clone https://github.com/jjf2009/cryptography-network-security-lab.git
+cd cryptography-network-security-lab
+python3 expt11/main.py   # example: RSA
+```
+
+Optional: `pip install prettytable matplotlib`
+
+## Audience
+
+Students, tutors, and self-learners studying cryptography foundations, modular arithmetic, RSA, Diffie–Hellman, CRT, classical ciphers, and introductory authenticated encryption in the browser.
+
+## Important limitations
+
+- Educational implementations with small parameters
+- Not suitable for protecting real-world secrets
+- Prefer audited libraries for production systems
+
+## Key terms
+
+cryptography, network security, number theory, Euclidean algorithm, extended Euclidean, GCD, linear Diophantine, modular inverse, Chinese Remainder Theorem, CRT, Euler totient, Blum Blum Shub, LCG, primality test, Jacobi symbol, Fermat factorization, Pohlig Hellman, Caesar cipher, Affine cipher, RSA, Diffie-Hellman, AES-256-GCM, PBKDF2, Web Crypto API, CNT college lab, information security
+
+## Citation
+
+If you reference this material:
+
+Title: Cryptography & Network Security Lab (cryptography-network-security-lab)
+URL: https://github.com/jjf2009/cryptography-network-security-lab
+Demo: https://cnt-college.vercel.app

@@ -1,4 +1,6 @@
-# Technical Implementation Details: SecureImage (AES-256-GCM)
+# SecureImage — Technical Implementation (AES-256-GCM)
+
+**SecureImage** is the browser assignment in [cryptography-network-security-lab](https://github.com/jjf2009/cryptography-network-security-lab): a cryptography lab project for **Cryptography and Network Security**. Live demo: [cnt-college.vercel.app](https://cnt-college.vercel.app).
 
 This project implements a professional-grade, browser-native encryption system for image data. It utilizes the **Web Crypto API** (`window.crypto.subtle`) to ensure high-performance, secure operations without external dependencies. 
 

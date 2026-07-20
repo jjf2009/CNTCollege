@@ -3,8 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureImage — Professional Encryption</title>
-    <!-- Refined Typography -->
+    <title>SecureImage — AES-256-GCM Image Encryption | Client-Side Web Crypto</title>
+    <meta name="description" content="SecureImage encrypts and decrypts images in your browser with AES-256-GCM and PBKDF2. Client-side only via the Web Crypto API — no uploads, no server. Part of the Cryptography & Network Security Lab (cryptography-network-security-lab).">
+    <meta name="keywords" content="AES-256-GCM, image encryption, Web Crypto API, PBKDF2, client-side encryption, encrypt image online, cryptography lab, SecureImage, cryptography-network-security-lab, CNT">
+    <meta name="author" content="Cryptography & Network Security Lab">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1a1a2e">
+    <link rel="canonical" href="https://cnt-college.vercel.app/">
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SecureImage · Cryptography Lab">
+    <meta property="og:title" content="SecureImage — AES-256-GCM Image Encryption">
+    <meta property="og:description" content="Encrypt and decrypt images entirely in your browser with AES-256-GCM and PBKDF2. Private, authenticated, client-side cryptography.">
+    <meta property="og:url" content="https://cnt-college.vercel.app/">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SecureImage — AES-256-GCM Image Encryption">
+    <meta name="twitter:description" content="Browser-only image encryption with AES-256-GCM and PBKDF2. No uploads. Web Crypto API.">
+
+    <!-- Structured data for search & AI engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SecureImage",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Any (modern browser)",
+      "description": "Client-side image encryption and decryption using AES-256-GCM and PBKDF2 via the Web Crypto API. Part of the Cryptography and Network Security lab (cryptography-network-security-lab).",
+      "url": "https://cnt-college.vercel.app/",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "AES-256-GCM authenticated encryption",
+        "PBKDF2 password-based key derivation (100000 iterations, SHA-256)",
+        "Client-side only — no image uploads",
+        "Portable Base64 IV:Tag:Ciphertext export"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "jjf2009",
+        "url": "https://github.com/jjf2009"
+      },
+      "isPartOf": {
+        "@type": "SoftwareSourceCode",
+        "name": "Cryptography & Network Security Lab",
+        "codeRepository": "https://github.com/jjf2009/cryptography-network-security-lab",
+        "programmingLanguage": ["Python", "JavaScript"]
+      }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="style.css">
@@ -15,7 +70,7 @@
     <div class="container">
         <header>
             <h1>SecureImage</h1>
-            <p>Shield your visual data with AES-256-GCM encryption. Private, secure, and purely client-side.</p>
+            <p>AES-256-GCM image encryption in your browser. Authenticated, password-based (PBKDF2), and fully client-side — your files never leave this device.</p>
         </header>
 
         <main class="main-grid">
@@ -80,7 +135,7 @@
                 <div id="decrypt-status" class="status-box"></div>
 
                 <div id="preview-area" class="preview-box">
-                    <img id="decrypted-preview" alt="Decrypted Outcome">
+                    <img id="decrypted-preview" alt="Decrypted image preview after AES-256-GCM decryption">
                 </div>
 
                 <a id="btn-download-img" class="btn" style="display: none; width: 100%; margin-top: 2rem; text-decoration: none;">
@@ -90,7 +145,12 @@
         </main>
 
         <footer>
-            <p>&copy; 2026 Project SecureImage // Client-Side AES-256-GCM Protocol</p>
+            <p>
+                <strong>SecureImage</strong> — client-side AES-256-GCM image encryption
+                · Part of
+                <a href="https://github.com/jjf2009/cryptography-network-security-lab" rel="noopener noreferrer">Cryptography &amp; Network Security Lab</a>
+            </p>
+            <p class="helper-text">Keys derived with PBKDF2 · Data never uploaded to a server</p>
         </footer>
     </div>
 
